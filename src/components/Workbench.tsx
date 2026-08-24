@@ -196,7 +196,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({
             onClick={() => setMobileView('editor')}
             className={`flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-md text-xs font-semibold whitespace-nowrap transition ${
               mobileView === 'editor'
-                ? 'bg-indigo-600 text-white shadow-sm'
+                ? 'bg-teal-600 text-white shadow-sm'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -207,7 +207,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({
             onClick={() => setMobileView('mentor')}
             className={`flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-md text-xs font-semibold whitespace-nowrap transition ${
               mobileView === 'mentor'
-                ? 'bg-indigo-600 text-white shadow-sm'
+                ? 'bg-teal-600 text-white shadow-sm'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -266,7 +266,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({
 
               <button
                 onClick={onTriggerReview}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 min-h-[38px] rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-md shadow-indigo-600/20 whitespace-nowrap flex-shrink-0"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 min-h-[38px] rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold transition shadow-md shadow-teal-600/20 whitespace-nowrap flex-shrink-0"
               >
                 <Sparkles className="w-3.5 h-3.5 flex-shrink-0" />
                 <span className="whitespace-nowrap">Full Code Review</span>
@@ -276,8 +276,8 @@ export const Workbench: React.FC<WorkbenchProps> = ({
 
           {/* Action Loading Status Banner */}
           {isActionLoading && (
-            <div className="flex items-center gap-2 px-4 py-2 bg-indigo-950/60 border-b border-indigo-500/30 text-indigo-200 text-xs animate-pulse flex-shrink-0">
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-400 flex-shrink-0" />
+            <div className="flex items-center gap-2 px-4 py-2 bg-teal-950/60 border-b border-teal-500/30 text-teal-200 text-xs animate-pulse flex-shrink-0">
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-teal-400 flex-shrink-0" />
               <span className="truncate">{actionStatus}</span>
             </div>
           )}
@@ -324,7 +324,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({
                         onClick={onTriggerReview}
                         className="flex items-center gap-1.5 px-3 py-1.5 min-h-[32px] rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition whitespace-nowrap flex-shrink-0"
                       >
-                        <Code2 className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
+                        <Code2 className="w-3.5 h-3.5 text-teal-400 flex-shrink-0" />
                         <span>Inspect in Code Review</span>
                       </button>
                     </div>
@@ -346,7 +346,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({
                     )}
                     {inlineExecutionResult.result &&
                       typeof inlineExecutionResult.result !== 'string' && (
-                        <div className="text-indigo-300 pt-1.5 border-t border-slate-800/60 font-mono text-xs">
+                        <div className="text-teal-300 pt-1.5 border-t border-slate-800/60 font-mono text-xs">
                           <span className="text-slate-500 text-[10px] font-sans block">Result:</span>
                           {JSON.stringify(inlineExecutionResult.result, null, 2)}
                         </div>
@@ -372,7 +372,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({
                   onClick={() => setActiveRightTab('chat')}
                   className={`flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-lg transition whitespace-nowrap flex-shrink-0 ${
                     activeRightTab === 'chat'
-                      ? 'bg-slate-800 text-indigo-300 font-semibold border border-slate-700'
+                      ? 'bg-slate-800 text-teal-300 font-semibold border border-slate-700'
                       : 'text-slate-400 hover:text-slate-200'
                   }`}
                 >
@@ -385,7 +385,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({
                     onClick={() => setActiveRightTab('diff')}
                     className={`flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-lg transition whitespace-nowrap flex-shrink-0 ${
                       activeRightTab === 'diff'
-                        ? 'bg-slate-800 text-indigo-300 font-semibold border border-slate-700'
+                        ? 'bg-slate-800 text-teal-300 font-semibold border border-slate-700'
                         : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
@@ -399,7 +399,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({
                     onClick={() => setActiveRightTab('explain')}
                     className={`flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-lg transition whitespace-nowrap flex-shrink-0 ${
                       activeRightTab === 'explain'
-                        ? 'bg-slate-800 text-indigo-300 font-semibold border border-slate-700'
+                        ? 'bg-slate-800 text-teal-300 font-semibold border border-slate-700'
                         : 'text-slate-400 hover:text-slate-200'
                     }`}
                   >
@@ -433,8 +433,8 @@ export const Workbench: React.FC<WorkbenchProps> = ({
           {activeRightTab === 'diff' && refactorDiff && (
             <div className="flex-1 flex flex-col p-2 sm:p-3 overflow-hidden min-h-0">
               {refactorDiff.complexityDiff && (
-                <div className="mb-2.5 p-2.5 rounded-lg bg-indigo-950/40 border border-indigo-500/30 text-xs flex-shrink-0">
-                  <div className="font-semibold text-indigo-300 mb-1 flex items-center gap-1.5 whitespace-nowrap">
+                <div className="mb-2.5 p-2.5 rounded-lg bg-teal-950/40 border border-teal-500/30 text-xs flex-shrink-0">
+                  <div className="font-semibold text-teal-300 mb-1 flex items-center gap-1.5 whitespace-nowrap">
                     <Zap className="w-3.5 h-3.5 flex-shrink-0" /> Complexity Optimization
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
@@ -497,7 +497,7 @@ export const Workbench: React.FC<WorkbenchProps> = ({
                     key={idx}
                     className="p-2.5 rounded-lg bg-[#0d1117] border border-slate-800/80 flex items-start gap-2.5"
                   >
-                    <span className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-400 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
                       {idx + 1}
                     </span>
                     <div className="text-slate-300 leading-relaxed">{step}</div>

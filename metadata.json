@@ -1,6 +1,6 @@
 {
-  "name": "DevMentor AI",
-  "description": "An AI Code Mentor platform that provides real-time code reviews, interactive debugging simulations, custom learning paths, and an AI pair-programming workbench.",
+  "name": "Techtor",
+  "description": "An AI Code Mentor and engineering workbench providing real-time code reviews, interactive debugging simulations, custom learning paths, and pair-programming.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

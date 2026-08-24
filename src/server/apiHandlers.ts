@@ -64,9 +64,9 @@ async function generateWithGeminiResilient(options: {
       const errMsg = err?.message || String(err);
       const isRateLimit = errMsg.includes('429') || errMsg.includes('RESOURCE_EXHAUSTED') || errMsg.includes('quota');
       if (isRateLimit) {
-        console.warn(`[DevMentor AI] Model ${model} rate-limited (429). Attempting fallback...`);
+        console.warn(`[Techtor AI] Model ${model} rate-limited (429). Attempting fallback...`);
       } else {
-        console.warn(`[DevMentor AI] Model ${model} generation failed:`, errMsg);
+        console.warn(`[Techtor AI] Model ${model} generation failed:`, errMsg);
       }
       // Continue loop to next model fallback
     }
@@ -197,7 +197,7 @@ Return a strictly valid JSON object matching this schema:
 
     return parsed;
   } catch (error: any) {
-    console.warn('[DevMentor AI] Code review fallback activated:', error?.message);
+    console.warn('[Techtor AI] Code review fallback activated:', error?.message);
     return staticFallback;
   }
 }
@@ -246,7 +246,7 @@ Return a strictly valid JSON object matching this schema:
       }
     }
   } catch (err: any) {
-    console.warn('[DevMentor AI] AutoFix fallback activated:', err?.message);
+    console.warn('[Techtor AI] AutoFix fallback activated:', err?.message);
   }
 
   // Deterministic local fallback
@@ -278,7 +278,7 @@ export async function handlePairChat(body: {
   };
 
   const systemInstruction = `${personaInstructions[persona] || personaInstructions.architect}
-You are pair-programming with the user inside the DevMentor AI Workbench.
+You are pair-programming with the user inside the Techtor Workbench.
 Current active programming language: ${language}.
 ${code ? `Active Code in Editor:\n\`\`\`${language}\n${code}\n\`\`\`` : ''}
 ${selectedSnippet ? `User highlighted selection:\n\`\`\`${language}\n${selectedSnippet}\n\`\`\`` : ''}
@@ -310,7 +310,7 @@ Key Communication Guidelines:
       };
     }
   } catch (error: any) {
-    console.warn('[DevMentor AI] Pair chat fallback activated:', error?.message);
+    console.warn('[Techtor AI] Pair chat fallback activated:', error?.message);
   }
 
   // Graceful conversational fallback
@@ -379,7 +379,7 @@ Perform the requested transformation. Return a strictly valid JSON object matchi
       return parsed;
     }
   } catch (error: any) {
-    console.warn('[DevMentor AI] Refactor fallback activated:', error?.message);
+    console.warn('[Techtor AI] Refactor fallback activated:', error?.message);
   }
 
   return {
@@ -473,7 +473,7 @@ Return a strictly valid JSON object matching this schema:
       return JSON.parse(rawText);
     }
   } catch (error: any) {
-    console.warn('[DevMentor AI] Learning path fallback activated:', error?.message);
+    console.warn('[Techtor AI] Learning path fallback activated:', error?.message);
   }
 
   // Rich curriculum fallback
@@ -641,7 +641,7 @@ Return a strictly valid JSON object matching this schema:
       };
     }
   } catch (err: any) {
-    console.warn('[DevMentor AI] Execution fallback:', err?.message);
+    console.warn('[Techtor AI] Execution fallback:', err?.message);
   }
 
   return {

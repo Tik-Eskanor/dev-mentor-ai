@@ -33,7 +33,7 @@ interface MentorChatProps {
   onRunCode?: (code: string, language: Language) => void;
 }
 
-const CHAT_STORAGE_KEY_PREFIX = 'devmentor_chat_history_';
+const CHAT_STORAGE_KEY_PREFIX = 'techtor_chat_history_';
 
 export const MentorChat: React.FC<MentorChatProps> = ({
   code,
@@ -45,28 +45,15 @@ export const MentorChat: React.FC<MentorChatProps> = ({
 }) => {
   const currentPersona = MENTOR_PERSONAS[activePersona] || MENTOR_PERSONAS.architect;
 
-  // Local storage chat persistence
-  const [messages, setMessages] = useState<ChatMessage[]>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem(`${CHAT_STORAGE_KEY_PREFIX}${activePersona}`);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-        }
-      } catch {
-        // ignore
-      }
-    }
-    return [
-      {
-        id: 'welcome',
-        role: 'assistant',
-        content: `${currentPersona.greeting}\n\nI am actively inspecting your **${language}** code. Ask me about architecture trade-offs, security hardening, algorithmic optimization, or design patterns.`,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      },
-    ];
-  });
+  // Local storage chat persistence with hydration safety
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: 'welcome',
+      role: 'assistant',
+      content: `${currentPersona.greeting}\n\nI am actively inspecting your **${language}** code. Ask me about architecture trade-offs, security hardening, algorithmic optimization, or design patterns.`,
+      timestamp: '12:00 PM',
+    },
+  ]);
 
   const [inputMessage, setInputMessage] = useState('');
   const [isChatLoading, setIsChatLoading] = useState(false);
@@ -78,6 +65,30 @@ export const MentorChat: React.FC<MentorChatProps> = ({
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Restore messages from localStorage after client mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(`${CHAT_STORAGE_KEY_PREFIX}${activePersona}`);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setMessages(parsed);
+          return;
+        }
+      }
+    } catch {
+      // ignore
+    }
+    setMessages([
+      {
+        id: 'welcome',
+        role: 'assistant',
+        content: `${currentPersona.greeting}\n\nI am actively inspecting your **${language}** code. Ask me about architecture trade-offs, security hardening, algorithmic optimization, or design patterns.`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+    ]);
+  }, [activePersona, currentPersona.greeting, language]);
 
   // Sync to local storage
   useEffect(() => {
@@ -219,7 +230,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `devmentor-${activePersona}-chat-${Date.now()}.md`;
+    a.download = `techtor-${activePersona}-chat-${Date.now()}.md`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -289,7 +300,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
                 <span className="truncate">{currentPersona.name}</span>
                 <ChevronDown className="w-3 h-3 text-slate-400 flex-shrink-0" />
               </div>
-              <div className="text-[10px] text-indigo-400 font-normal truncate">
+              <div className="text-[10px] text-teal-400 font-normal truncate">
                 {currentPersona.title}
               </div>
             </div>
@@ -313,7 +324,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
                     }}
                     className={`w-full text-left p-2 rounded-lg text-xs flex items-center gap-2.5 transition ${
                       isSelected
-                        ? 'bg-indigo-950/70 text-indigo-300 border border-indigo-500/40 font-semibold'
+                        ? 'bg-teal-950/70 text-teal-300 border border-teal-500/40 font-semibold'
                         : 'text-slate-300 hover:bg-slate-800'
                     }`}
                   >
@@ -386,7 +397,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
               <div
                 className={`flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-sm shadow-sm ${
                   isAssistant
-                    ? 'bg-indigo-600/30 text-indigo-300 border border-indigo-500/40'
+                    ? 'bg-teal-600/30 text-teal-300 border border-teal-500/40'
                     : 'bg-slate-700 text-slate-200'
                 }`}
               >
@@ -398,13 +409,13 @@ export const MentorChat: React.FC<MentorChatProps> = ({
                 className={`max-w-[88%] rounded-2xl p-3.5 leading-relaxed shadow-md space-y-2 ${
                   isAssistant
                     ? 'bg-[#0d1117] text-slate-200 border border-slate-800'
-                    : 'bg-indigo-600 text-white font-sans'
+                    : 'bg-teal-600 text-white font-sans'
                 }`}
               >
                 {/* Message Header (for assistant) */}
                 {isAssistant && (
                   <div className="flex items-center justify-between pb-1 border-b border-slate-800/80 text-[10px] text-slate-400">
-                    <span className="font-semibold text-indigo-300">{currentPersona.name}</span>
+                    <span className="font-semibold text-teal-300">{currentPersona.name}</span>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleCopyText(msg.content, `msg-${msg.id}`)}
@@ -440,7 +451,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
                                 <div className="my-2.5 rounded-xl border border-slate-800 bg-[#161b22] overflow-hidden">
                                   {/* Code Header Actions */}
                                   <div className="px-3 py-1.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
-                                    <span className="uppercase text-indigo-400 font-bold">
+                                    <span className="uppercase text-teal-400 font-bold">
                                       {snippetLang}
                                     </span>
                                     <div className="flex items-center gap-2">
@@ -463,7 +474,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
 
                                       <button
                                         onClick={() => handleApplyCode(codeString, snippetKey)}
-                                        className="flex items-center gap-1 px-2 py-0.5 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-sans text-[10px] font-semibold transition"
+                                        className="flex items-center gap-1 px-2 py-0.5 rounded bg-teal-600 hover:bg-teal-500 text-white font-sans text-[10px] font-semibold transition"
                                       >
                                         {appliedSnippetKey === snippetKey ? (
                                           <>
@@ -500,7 +511,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
 
                             return (
                               <code
-                                className="px-1.5 py-0.5 rounded bg-slate-800 text-indigo-300 font-mono text-[11px]"
+                                className="px-1.5 py-0.5 rounded bg-slate-800 text-teal-300 font-mono text-[11px]"
                                 {...props}
                               >
                                 {children}
@@ -520,7 +531,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
                             return <li className="leading-relaxed">{children}</li>;
                           },
                           strong({ children }) {
-                            return <strong className="font-bold text-indigo-300">{children}</strong>;
+                            return <strong className="font-bold text-teal-300">{children}</strong>;
                           },
                           h3({ children }) {
                             return (
@@ -542,7 +553,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
                 </div>
 
                 {!isAssistant && (
-                  <div className="text-[10px] text-indigo-200/80 text-right">{msg.timestamp}</div>
+                  <div className="text-[10px] text-teal-200/80 text-right">{msg.timestamp}</div>
                 )}
               </div>
             </div>
@@ -551,7 +562,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
 
         {isChatLoading && (
           <div className="flex items-center gap-2 p-3 rounded-2xl bg-[#0d1117] border border-slate-800 text-slate-400 text-xs">
-            <Loader2 className="w-4 h-4 animate-spin text-indigo-400 flex-shrink-0" />
+            <Loader2 className="w-4 h-4 animate-spin text-teal-400 flex-shrink-0" />
             <span>{currentPersona.name} is formulating architectural review...</span>
           </div>
         )}
@@ -564,7 +575,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
         <div className="flex justify-center -mt-8 mb-2 relative z-10">
           <button
             onClick={scrollToBottom}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-600 text-white shadow-lg text-xs font-semibold hover:bg-indigo-500 transition animate-bounce"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-600 text-white shadow-lg text-xs font-semibold hover:bg-teal-500 transition animate-bounce"
           >
             <ArrowDown className="w-3 h-3" />
             <span>New messages</span>
@@ -575,14 +586,14 @@ export const MentorChat: React.FC<MentorChatProps> = ({
       {/* Socratic Prompt Suggestions Carousel */}
       <div className="px-3 py-2 bg-[#0d1117] border-t border-slate-800/80 flex items-center gap-1.5 overflow-x-auto text-[11px] scrollbar-none flex-shrink-0">
         <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap flex-shrink-0 flex items-center gap-1">
-          <Sparkles className="w-3 h-3 text-indigo-400" /> Prompts:
+          <Sparkles className="w-3 h-3 text-teal-400" /> Prompts:
         </span>
         {getSuggestedPrompts().map((prompt, idx) => (
           <button
             key={idx}
             onClick={() => handleSendMessage(prompt)}
             disabled={isChatLoading}
-            className="px-2.5 py-1 min-h-[30px] rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-indigo-200 border border-slate-800 whitespace-nowrap transition flex-shrink-0 text-[11px] font-medium disabled:opacity-50"
+            className="px-2.5 py-1 min-h-[30px] rounded-full bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-teal-200 border border-slate-800 whitespace-nowrap transition flex-shrink-0 text-[11px] font-medium disabled:opacity-50"
           >
             {prompt}
           </button>
@@ -610,7 +621,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
               }
             }}
             placeholder={`Ask ${currentPersona.name} anything about your ${language} code... (Shift+Enter for newline)`}
-            className="flex-1 px-3 py-2.5 min-h-[42px] max-h-32 rounded-xl bg-slate-900 border border-slate-700/80 text-slate-200 text-xs placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 transition resize-none leading-relaxed"
+            className="flex-1 px-3 py-2.5 min-h-[42px] max-h-32 rounded-xl bg-slate-900 border border-slate-700/80 text-slate-200 text-xs placeholder:text-slate-500 focus:outline-none focus:border-teal-500 transition resize-none leading-relaxed"
           />
 
           <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -629,7 +640,7 @@ export const MentorChat: React.FC<MentorChatProps> = ({
             <button
               type="submit"
               disabled={!inputMessage.trim() || isChatLoading}
-              className="p-2.5 min-h-[42px] min-w-[42px] rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white disabled:opacity-40 transition shadow-md shadow-indigo-600/20 flex items-center justify-center"
+              className="p-2.5 min-h-[42px] min-w-[42px] rounded-xl bg-teal-600 hover:bg-teal-500 text-white disabled:opacity-40 transition shadow-md shadow-teal-600/20 flex items-center justify-center"
               aria-label="Send Message"
             >
               <Send className="w-4 h-4" />

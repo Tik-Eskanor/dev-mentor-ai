@@ -100,7 +100,7 @@ export const CodeReviewView: React.FC<CodeReviewViewProps> = ({
 
   const handleCopyReport = () => {
     if (!reviewResult) return;
-    const reportMd = `# DevMentor AI Code Review Report
+    const reportMd = `# Techtor Code Review Report
 Overall Health Score: ${reviewResult.overallScore}/100
 Language: ${language}
 Date: ${new Date().toLocaleDateString()}
@@ -175,7 +175,7 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
         {/* Header Bar */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800">
           <div className="flex items-start gap-3">
-            <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex-shrink-0 mt-0.5">
+            <div className="p-2 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 flex-shrink-0 mt-0.5">
               <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div>
@@ -183,7 +183,7 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
                 <h1 className="text-base sm:text-xl font-bold text-slate-100">
                   Real-Time Code Review & Security Audit
                 </h1>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-teal-500/20 text-teal-300 border border-teal-500/30">
                   {language.toUpperCase()}
                 </span>
               </div>
@@ -201,7 +201,7 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
                 onClick={() => setActiveTab('findings')}
                 className={`flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md transition text-xs font-semibold whitespace-nowrap flex-shrink-0 ${
                   activeTab === 'findings'
-                    ? 'bg-indigo-600 text-white shadow-sm'
+                    ? 'bg-teal-600 text-white shadow-sm'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
@@ -212,7 +212,7 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
                 onClick={() => setActiveTab('diff')}
                 className={`flex items-center gap-1.5 px-2.5 py-1 min-h-[32px] rounded-md transition text-xs font-semibold whitespace-nowrap flex-shrink-0 ${
                   activeTab === 'diff'
-                    ? 'bg-indigo-600 text-white shadow-sm'
+                    ? 'bg-teal-600 text-white shadow-sm'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
@@ -232,7 +232,7 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
                   onClick={() => setStrictness(lvl)}
                   className={`px-2 sm:px-2.5 py-1 min-h-[32px] rounded-md transition text-xs whitespace-nowrap flex-shrink-0 font-medium ${
                     strictness === lvl
-                      ? 'bg-indigo-600 text-white shadow-sm font-semibold'
+                      ? 'bg-teal-600 text-white shadow-sm font-semibold'
                       : 'text-slate-400 hover:text-slate-200'
                   }`}
                 >
@@ -247,7 +247,7 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
               className="flex items-center gap-1.5 px-3 py-1.5 min-h-[38px] rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition disabled:opacity-50 whitespace-nowrap flex-shrink-0"
             >
               <RefreshCw
-                className={`w-3.5 h-3.5 flex-shrink-0 ${isLoading ? 'animate-spin text-indigo-400' : ''}`}
+                className={`w-3.5 h-3.5 flex-shrink-0 ${isLoading ? 'animate-spin text-teal-400' : ''}`}
               />
               <span className="whitespace-nowrap">Re-Scan</span>
             </button>
@@ -266,7 +266,7 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
 
             <button
               onClick={onBackToEditor}
-              className="px-3.5 py-1.5 min-h-[38px] rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition shadow-sm whitespace-nowrap flex-shrink-0"
+              className="px-3.5 py-1.5 min-h-[38px] rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-semibold transition shadow-sm whitespace-nowrap flex-shrink-0"
             >
               Back to Editor
             </button>
@@ -294,7 +294,7 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
         {/* Loading Spinner Screen */}
         {isLoading && !reviewResult ? (
           <div className="flex flex-col items-center justify-center py-20 sm:py-24 space-y-4">
-            <Loader2 className="w-10 h-10 animate-spin text-indigo-500 flex-shrink-0" />
+            <Loader2 className="w-10 h-10 animate-spin text-teal-500 flex-shrink-0" />
             <div className="text-center px-4">
               <h3 className="text-base font-semibold text-slate-200">Analyzing Abstract Syntax Tree...</h3>
               <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
@@ -321,9 +321,9 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
           ) : (
             <>
               {/* Master Auto-Fix Action Callout */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-indigo-950/60 via-slate-900 to-emerald-950/40 border border-indigo-500/40 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-teal-950/60 via-slate-900 to-emerald-950/40 border border-teal-500/40 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="flex items-start gap-3.5">
-                  <div className="p-2.5 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex-shrink-0 mt-0.5">
+                  <div className="p-2.5 rounded-xl bg-teal-500/20 text-teal-300 border border-teal-500/30 flex-shrink-0 mt-0.5">
                     <Sparkles className="w-5 h-5 flex-shrink-0" />
                   </div>
                   <div>
@@ -422,13 +422,13 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
 
               {/* Complexity & Big-O Comparison Banner */}
               {reviewResult.complexity && (
-                <div className="p-4 rounded-xl bg-gradient-to-r from-indigo-950/40 via-slate-900 to-indigo-950/20 border border-indigo-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-4">
+                <div className="p-4 rounded-xl bg-gradient-to-r from-teal-950/40 via-slate-900 to-teal-950/20 border border-teal-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-4">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="p-2 rounded-lg bg-indigo-500/20 text-indigo-400 flex-shrink-0">
+                    <div className="p-2 rounded-lg bg-teal-500/20 text-teal-400 flex-shrink-0">
                       <Zap className="w-5 h-5 flex-shrink-0" />
                     </div>
                     <div className="min-w-0">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-300 whitespace-nowrap">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-teal-300 whitespace-nowrap">
                         Algorithmic Complexity Profiler
                       </h4>
                       <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">
@@ -571,8 +571,8 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
                                 </div>
                               )}
 
-                              <div className="p-2.5 rounded-lg bg-indigo-950/30 border border-indigo-900/40 text-indigo-200 text-xs">
-                                <strong className="font-semibold text-indigo-300">Recommended Resolution: </strong>
+                              <div className="p-2.5 rounded-lg bg-teal-950/30 border border-teal-900/40 text-teal-200 text-xs">
+                                <strong className="font-semibold text-teal-300">Recommended Resolution: </strong>
                                 {issue.suggestion}
                               </div>
 
@@ -615,13 +615,13 @@ ${reviewResult.keyRecommendations.map((r) => `- ${r}`).join('\n')}
                 {/* Recommendations */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-[#161b22] border border-slate-800 space-y-3">
                   <h3 className="text-sm font-bold text-slate-200 font-sans flex items-center gap-2 whitespace-nowrap">
-                    <Sparkles className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                    <Sparkles className="w-4 h-4 text-teal-400 flex-shrink-0" />
                     Key Architectural Recommendations
                   </h3>
                   <div className="space-y-2">
                     {reviewResult.keyRecommendations.map((rec, idx) => (
                       <div key={idx} className="flex items-start gap-2 text-xs text-slate-300 leading-relaxed">
-                        <span className="w-4 h-4 rounded-full bg-indigo-500/20 text-indigo-400 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
+                        <span className="w-4 h-4 rounded-full bg-teal-500/20 text-teal-400 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
                           {idx + 1}
                         </span>
                         <span>{rec}</span>

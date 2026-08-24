@@ -45,10 +45,10 @@ function MainApp() {
   // Show clean spinner during initial token verification
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0d1117] flex flex-col items-center justify-center text-slate-400 gap-3">
-        <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+      <div className="min-h-screen bg-[#0b0f19] flex flex-col items-center justify-center text-slate-400 gap-3">
+        <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
         <div className="text-xs font-semibold tracking-wide uppercase text-slate-500">
-          Authenticating DevMentor Session...
+          Authenticating Techtor Session...
         </div>
       </div>
     );
@@ -60,7 +60,7 @@ function MainApp() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d1117] text-slate-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen bg-[#0b0f19] text-slate-100 flex flex-col font-sans selection:bg-teal-500/30 selection:text-teal-200">
       {/* Top Navigation Bar with Authentication Status */}
       <Navbar
         activeTab={activeTab}

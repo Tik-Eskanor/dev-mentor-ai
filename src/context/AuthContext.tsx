@@ -22,59 +22,56 @@ interface AuthContextType extends AuthState {
   closeAuthModal: () => void;
 }
 
-const AUTH_TOKEN_KEY = 'devmentor_auth_token_v1';
-const AUTH_USER_KEY = 'devmentor_auth_user_v1';
+const AUTH_TOKEN_KEY = 'techtor_auth_token_v1';
+const AUTH_USER_KEY = 'techtor_auth_user_v1';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const toast = useToast();
 
-  const [token, setToken] = useState<string | null>(() => {
-    if (typeof window === 'undefined') return null;
-    try {
-      return localStorage.getItem(AUTH_TOKEN_KEY);
-    } catch {
-      return null;
-    }
-  });
-
-  const [user, setUser] = useState<User | null>(() => {
-    if (typeof window === 'undefined') return null;
-    try {
-      const saved = localStorage.getItem(AUTH_USER_KEY);
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
-
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
 
-  // Verify session with server on initial mount
+  // Verify session with server on initial mount after client hydration
   useEffect(() => {
     async function checkAuth() {
-      if (token) {
-        try {
-          const res = await apiGetMe(token);
-          setUser(res.user);
-          localStorage.setItem(AUTH_USER_KEY, JSON.stringify(res.user));
-        } catch (err: any) {
-          console.warn('Session verification failed, resetting token:', err);
-          setToken(null);
-          setUser(null);
-          localStorage.removeItem(AUTH_TOKEN_KEY);
-          localStorage.removeItem(AUTH_USER_KEY);
-          toast.warning('Session Expired', 'Please sign in to continue using DevMentor AI.');
+      try {
+        const savedToken = typeof window !== 'undefined' ? localStorage.getItem(AUTH_TOKEN_KEY) : null;
+        const savedUserStr = typeof window !== 'undefined' ? localStorage.getItem(AUTH_USER_KEY) : null;
+        const savedUser = savedUserStr ? JSON.parse(savedUserStr) : null;
+
+        if (savedToken) {
+          setToken(savedToken);
+          if (savedUser) {
+            setUser(savedUser);
+          }
+
+          try {
+            const res = await apiGetMe(savedToken);
+            setUser(res.user);
+            localStorage.setItem(AUTH_USER_KEY, JSON.stringify(res.user));
+          } catch (err: any) {
+            console.warn('Session verification failed, resetting token:', err);
+            setToken(null);
+            setUser(null);
+            localStorage.removeItem(AUTH_TOKEN_KEY);
+            localStorage.removeItem(AUTH_USER_KEY);
+            toast.warning('Session Expired', 'Please sign in to continue using Techtor.');
+          }
         }
+      } catch (err) {
+        console.warn('Failed to restore session:', err);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }
 
     checkAuth();
-  }, [token, toast]);
+  }, [toast]);
 
   const login = async (payload: LoginPayload) => {
     setIsLoading(true);
@@ -109,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsAuthModalOpen(false);
       toast.success(
         `Account Created Successfully!`,
-        `Welcome to DevMentor AI, ${res.user.name} (${res.user.role}).`
+        `Welcome to Techtor, ${res.user.name} (${res.user.role}).`
       );
     } catch (err: any) {
       const msg = err.message || 'Registration could not be completed.';

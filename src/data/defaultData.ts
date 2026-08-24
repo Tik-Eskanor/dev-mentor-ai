@@ -7,7 +7,7 @@ export const MENTOR_PERSONAS: Record<string, MentorPersona> = {
     title: 'Principal Staff Architect',
     avatar: '🏛️',
     badge: 'System Design & Clean Code',
-    accentColor: 'indigo',
+    accentColor: 'purple',
     description: 'Specializes in scalable system architecture, SOLID principles, clean modular abstractions, and high-level design trade-offs.',
     greeting: 'Hello! I am Elena. Let us inspect your system architecture, evaluate design trade-offs, and ensure your code is decoupled, robust, and enterprise-ready.',
   },
@@ -69,7 +69,7 @@ export const LANGUAGE_SAMPLES: Record<Language, { title: string; language: Langu
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DevMentor Interactive Counter & Canvas</title>
+  <title>Techtor Interactive Counter & Canvas</title>
   <style>
     body {
       font-family: system-ui, -apple-system, sans-serif;
@@ -129,7 +129,7 @@ export const LANGUAGE_SAMPLES: Record<Language, { title: string; language: Langu
 <body>
   <main class="card" role="region" aria-labelledby="main-heading">
     <span class="badge">HTML5 + Native Script</span>
-    <h1 id="main-heading">DevMentor Interactive Showcase</h1>
+    <h1 id="main-heading">Techtor Interactive Showcase</h1>
     <p>Clean semantic markup paired with high-performance local DOM state manipulation.</p>
 
     <div class="counter-display">
@@ -313,7 +313,7 @@ return runDemo();`,
     code: `<?php
 declare(strict_types=1);
 
-namespace DevMentor\\Domain;
+namespace Techtor\\Domain;
 
 // Modern PHP 8.3: Readonly Class, Enum Pattern, & Access Policy
 readonly class UserAccount
@@ -360,7 +360,7 @@ enum UserRole: string
 // Simulated Execution
 $user = new UserAccount(
     id: "usr_9984",
-    email: "marcus.thorne@devmentor.ai",
+    email: "marcus.thorne@techtor.ai",
     role: UserRole::SecurityLead,
     createdAt: new \\DateTimeImmutable(),
     passwordHash: password_hash("HardenedPassword123!", PASSWORD_ARGON2ID)
@@ -928,7 +928,7 @@ readonly class UserAccount {
 // Verification
 $user = new UserAccount(
     id: 'usr_8472',
-    email: 'marcus@devmentor.ai',
+    email: 'marcus@techtor.ai',
     role: UserRole::SuperAdmin,
     createdAt: new \\DateTimeImmutable()
 );
@@ -988,7 +988,7 @@ class SecurityService {
 }
 
 // Verification
-$pwd = "SuperSecretDevMentorPass2026!";
+$pwd = "SuperSecretTechtorPass2026!";
 $hash = SecurityService::hashPassword($pwd);
 echo "Argon2id Hash generated:\\n" . $hash . "\\n";
 echo "Verification check: " . (SecurityService::verify($pwd, $hash) ? 'VALID' : 'INVALID') . "\\n";`,
@@ -1179,9 +1179,9 @@ run();`,
 <body>
   <main role="main">
     <article class="card" aria-labelledby="product-title">
-      <h2 id="product-title">DevMentor Pro Subscription</h2>
+      <h2 id="product-title">Techtor Pro Subscription</h2>
       <p>Master systems architecture and code reviews with dedicated AI guidance.</p>
-      <button type="button" aria-label="Purchase DevMentor Pro">Subscribe Now</button>
+      <button type="button" aria-label="Purchase Techtor Pro">Subscribe Now</button>
     </article>
   </main>
 </body>

@@ -124,7 +124,7 @@ const SEED_USERS = [
   {
     id: 'user-demo-1',
     name: 'Alex Vance',
-    email: 'alex@devmentor.ai',
+    email: 'alex@techtor.ai',
     role: 'Principal Architect',
     avatar: '🏛️',
     password: 'password123',
@@ -140,7 +140,7 @@ const SEED_USERS = [
   {
     id: 'user-demo-3',
     name: 'Marcus Brody',
-    email: 'marcus@devmentor.ai',
+    email: 'marcus@techtor.ai',
     role: 'Full Stack Engineer',
     avatar: '⚡',
     password: 'password123',
@@ -156,18 +156,18 @@ export async function initDatabase(): Promise<void> {
     const connectionString = getConnectionString();
     if (connectionString) {
       try {
-        console.log('[DevMentor DB] Attempting connection to Neon Database...');
+        console.log('[Techtor DB] Attempting connection to Neon Database...');
         pool = new Pool({ connectionString });
         
         // Prevent background pool errors from triggering uncaughtException
         pool.on('error', (err) => {
-          console.warn('[DevMentor DB] Neon database connection notice:', err?.message || String(err));
+          console.warn('[Techtor DB] Neon database connection notice:', err?.message || String(err));
           isNeonConnected = false;
         });
 
         // Test query with quick response verification
         const testRes = await pool.query('SELECT NOW() as current_time');
-        console.log('[DevMentor DB] Neon Database connected at:', testRes.rows[0]?.current_time);
+        console.log('[Techtor DB] Neon Database connected at:', testRes.rows[0]?.current_time);
 
         // Run migrations
         await pool.query(`
@@ -207,15 +207,15 @@ export async function initDatabase(): Promise<void> {
         }
 
         isNeonConnected = true;
-        console.log('[DevMentor DB] Neon PostgreSQL tables and seed accounts verified successfully.');
+        console.log('[Techtor DB] Neon PostgreSQL tables and seed accounts verified successfully.');
         return;
       } catch (err) {
-        console.error('[DevMentor DB] Neon connection failed, using local storage fallback:', err);
+        console.error('[Techtor DB] Neon connection failed, using local storage fallback:', err);
         isNeonConnected = false;
         pool = null;
       }
     } else {
-      console.log('[DevMentor DB] No DATABASE_URL detected. Using persistent local storage.');
+      console.log('[Techtor DB] No DATABASE_URL detected. Using persistent local storage.');
     }
 
     // Seed local fallback
@@ -268,7 +268,7 @@ export async function findUserByEmail(email: string): Promise<StoredUser | null>
       }
       return null;
     } catch (err) {
-      console.error('[DevMentor DB] findUserByEmail Neon error:', err);
+      console.error('[Techtor DB] findUserByEmail Neon error:', err);
     }
   }
 
@@ -296,7 +296,7 @@ export async function findUserById(id: string): Promise<StoredUser | null> {
       }
       return null;
     } catch (err) {
-      console.error('[DevMentor DB] findUserById Neon error:', err);
+      console.error('[Techtor DB] findUserById Neon error:', err);
     }
   }
 
@@ -316,7 +316,7 @@ export async function insertUser(user: StoredUser): Promise<void> {
       );
       return;
     } catch (err) {
-      console.error('[DevMentor DB] insertUser Neon error:', err);
+      console.error('[Techtor DB] insertUser Neon error:', err);
     }
   }
 
@@ -336,7 +336,7 @@ export async function insertSession(token: string, userId: string): Promise<void
       );
       return;
     } catch (err) {
-      console.error('[DevMentor DB] insertSession Neon error:', err);
+      console.error('[Techtor DB] insertSession Neon error:', err);
     }
   }
 
@@ -355,7 +355,7 @@ export async function findSession(token: string): Promise<{ userId: string } | n
       }
       return null;
     } catch (err) {
-      console.error('[DevMentor DB] findSession Neon error:', err);
+      console.error('[Techtor DB] findSession Neon error:', err);
     }
   }
 
@@ -371,7 +371,7 @@ export async function removeSession(token: string): Promise<void> {
       await pool.query('DELETE FROM sessions WHERE token = $1', [token]);
       return;
     } catch (err) {
-      console.error('[DevMentor DB] removeSession Neon error:', err);
+      console.error('[Techtor DB] removeSession Neon error:', err);
     }
   }
 

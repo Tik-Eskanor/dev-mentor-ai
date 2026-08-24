@@ -37,7 +37,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-[#161b22] border-b border-slate-800">
         <div className="flex items-center gap-3">
-          <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+          <div className="p-1.5 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/20">
             <ArrowLeftRight className="w-4 h-4" />
           </div>
           <div>
@@ -51,7 +51,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
             <button
               onClick={() => setViewMode('unified')}
               className={`px-2.5 py-1 rounded-md transition ${
-                viewMode === 'unified' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+                viewMode === 'unified' ? 'bg-teal-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               Unified Diff
@@ -59,7 +59,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
             <button
               onClick={() => setViewMode('split')}
               className={`px-2.5 py-1 rounded-md transition ${
-                viewMode === 'split' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
+                viewMode === 'split' ? 'bg-teal-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               Side by Side

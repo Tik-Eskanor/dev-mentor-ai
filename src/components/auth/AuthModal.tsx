@@ -28,23 +28,6 @@ const ROLES = [
   'Student / Learner',
 ];
 
-const DEMO_LOGINS = [
-  {
-    name: 'Alex Vance',
-    role: 'Principal Architect',
-    email: 'alex@devmentor.ai',
-    password: 'password123',
-    avatar: '🏛️',
-  },
-  {
-    name: 'Sarah Connor',
-    role: 'Senior Security Engineer',
-    email: 'sarah@security.io',
-    password: 'password123',
-    avatar: '🛡️',
-  },
-];
-
 export const AuthModal: React.FC = () => {
   const {
     isAuthModalOpen,
@@ -120,20 +103,6 @@ export const AuthModal: React.FC = () => {
     }
   };
 
-  const handleQuickDemoLogin = async (demoEmail: string, demoPass: string) => {
-    setError(null);
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setIsSubmitting(true);
-    try {
-      await login({ email: demoEmail, password: demoPass });
-    } catch (err: any) {
-      setError(err.message || 'Demo login failed.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const calculatePasswordStrength = (pass: string) => {
     if (!pass) return 0;
     let score = 0;
@@ -146,19 +115,19 @@ export const AuthModal: React.FC = () => {
   const strength = calculatePasswordStrength(password);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-fade-in font-sans">
-      <div className="w-full max-w-md bg-[#161b22] border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/40 backdrop-blur-xs animate-fade-in font-sans">
+      <div className="w-full max-w-md bg-white border border-purple-200/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] text-slate-800">
         {/* Modal Top Header */}
-        <div className="px-5 py-4 bg-[#0d1117] border-b border-slate-800 flex items-center justify-between flex-shrink-0">
+        <div className="px-5 py-4 bg-purple-50/60 border-b border-purple-100 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            <div className="p-1.5 rounded-lg bg-purple-100 text-purple-700 border border-purple-200">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm sm:text-base font-bold text-slate-100">
-                {mode === 'login' ? 'Sign In to DevMentor' : 'Create DevMentor Account'}
+              <h2 className="text-sm sm:text-base font-bold text-slate-900">
+                {mode === 'login' ? 'Sign In to Techtor' : 'Create Techtor Account'}
               </h2>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-500">
                 {mode === 'login'
                   ? 'Access your saved progress & code reviews'
                   : 'Join the engineering mentorship platform'}
@@ -168,14 +137,14 @@ export const AuthModal: React.FC = () => {
 
           <button
             onClick={closeAuthModal}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Tab Switcher */}
-        <div className="p-1.5 mx-5 mt-4 bg-slate-900 rounded-xl border border-slate-800 flex gap-1 flex-shrink-0">
+        <div className="p-1.5 mx-5 mt-4 bg-slate-100 rounded-xl border border-slate-200 flex gap-1 flex-shrink-0">
           <button
             type="button"
             onClick={() => {
@@ -184,8 +153,8 @@ export const AuthModal: React.FC = () => {
             }}
             className={`flex-1 py-1.5 min-h-[34px] rounded-lg text-xs font-semibold transition whitespace-nowrap ${
               mode === 'login'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             Sign In
@@ -198,8 +167,8 @@ export const AuthModal: React.FC = () => {
             }}
             className={`flex-1 py-1.5 min-h-[34px] rounded-lg text-xs font-semibold transition whitespace-nowrap ${
               mode === 'register'
-                ? 'bg-indigo-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-purple-600 text-white shadow-sm'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             Create Account
@@ -209,8 +178,8 @@ export const AuthModal: React.FC = () => {
         {/* Modal Body & Form */}
         <div className="p-5 overflow-y-auto space-y-4 text-xs">
           {error && (
-            <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-900/50 text-rose-300 text-xs flex items-start gap-2 animate-shake">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-rose-400" />
+            <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2 animate-shake">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-rose-600" />
               <div className="flex-1 leading-relaxed">{error}</div>
             </div>
           )}
@@ -219,30 +188,30 @@ export const AuthModal: React.FC = () => {
             {mode === 'register' && (
               <>
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Full Name</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Full Name</label>
                   <div className="relative">
-                    <UserIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <UserIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
                       type="text"
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Alex Vance"
-                      className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-900 border border-slate-700 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
+                      className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white text-xs transition"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">
+                  <label className="block font-semibold text-slate-700 mb-1">
                     Engineering Role / Focus
                   </label>
                   <div className="relative">
-                    <Briefcase className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <Briefcase className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <select
                       value={role}
                       onChange={(e) => setRole(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-900 border border-slate-700 text-slate-200 focus:outline-none focus:border-indigo-500 text-xs"
+                      className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-purple-600 focus:bg-white text-xs transition"
                     >
                       {ROLES.map((r) => (
                         <option key={r} value={r}>
@@ -256,36 +225,36 @@ export const AuthModal: React.FC = () => {
             )}
 
             <div>
-              <label className="block font-semibold text-slate-300 mb-1">Email Address</label>
+              <label className="block font-semibold text-slate-700 mb-1">Email Address</label>
               <div className="relative">
-                <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-900 border border-slate-700 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
+                  className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white text-xs transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-300 mb-1">Password</label>
+              <label className="block font-semibold text-slate-700 mb-1">Password</label>
               <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-10 py-2 min-h-[40px] rounded-xl bg-slate-900 border border-slate-700 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
+                  className="w-full pl-9 pr-10 py-2 min-h-[40px] rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white text-xs transition"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -293,21 +262,21 @@ export const AuthModal: React.FC = () => {
 
               {mode === 'register' && password && (
                 <div className="mt-1.5 space-y-1">
-                  <div className="flex items-center justify-between text-[10px] text-slate-400">
+                  <div className="flex items-center justify-between text-[10px] text-slate-500">
                     <span>Password strength:</span>
                     <span
                       className={
                         strength >= 80
-                          ? 'text-emerald-400 font-semibold'
+                          ? 'text-emerald-600 font-semibold'
                           : strength >= 50
-                          ? 'text-amber-400 font-semibold'
-                          : 'text-rose-400'
+                          ? 'text-amber-600 font-semibold'
+                          : 'text-rose-600'
                       }
                     >
                       {strength >= 80 ? 'Strong' : strength >= 50 ? 'Medium' : 'Weak'}
                     </span>
                   </div>
-                  <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                  <div className="w-full h-1 bg-slate-200 rounded-full overflow-hidden">
                     <div
                       className={`h-full transition-all duration-300 ${
                         strength >= 80
@@ -325,16 +294,16 @@ export const AuthModal: React.FC = () => {
 
             {mode === 'register' && (
               <div>
-                <label className="block font-semibold text-slate-300 mb-1">Confirm Password</label>
+                <label className="block font-semibold text-slate-700 mb-1">Confirm Password</label>
                 <div className="relative">
-                  <KeyRound className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <KeyRound className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-900 border border-slate-700 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
+                    className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white text-xs transition"
                   />
                 </div>
               </div>
@@ -343,7 +312,7 @@ export const AuthModal: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full mt-2 py-2.5 min-h-[42px] rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full mt-2 py-2.5 min-h-[42px] rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition shadow-md shadow-purple-600/20 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
@@ -358,34 +327,6 @@ export const AuthModal: React.FC = () => {
               )}
             </button>
           </form>
-
-          {/* Quick Demo Logins Section */}
-          <div className="pt-3 border-t border-slate-800 space-y-2">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
-              <span>1-Click Test Accounts</span>
-              <span className="text-indigo-400">Instant Access</span>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {DEMO_LOGINS.map((demo) => (
-                <button
-                  key={demo.email}
-                  type="button"
-                  onClick={() => handleQuickDemoLogin(demo.email, demo.password)}
-                  disabled={isSubmitting}
-                  className="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800/90 border border-slate-800 text-left transition flex items-center gap-2 text-xs group"
-                >
-                  <span className="text-base flex-shrink-0">{demo.avatar}</span>
-                  <div className="min-w-0">
-                    <div className="font-semibold text-slate-200 group-hover:text-indigo-300 truncate">
-                      {demo.name}
-                    </div>
-                    <div className="text-[10px] text-slate-400 truncate">{demo.role}</div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>

@@ -162,10 +162,10 @@ const ToastCard: React.FC<{
     info: {
       icon: Info,
       bg: 'bg-slate-900/95',
-      border: 'border-indigo-500/40 shadow-indigo-900/30',
-      iconColor: 'text-indigo-400',
-      titleColor: 'text-indigo-200',
-      progressColor: 'bg-indigo-500',
+      border: 'border-teal-500/40 shadow-teal-900/30',
+      iconColor: 'text-teal-400',
+      titleColor: 'text-teal-200',
+      progressColor: 'bg-teal-500',
     },
   };
 

@@ -131,7 +131,7 @@ export const SandboxRunner: React.FC<SandboxRunnerProps> = ({
             onClick={() => setMobileTab('editor')}
             className={`flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-md text-xs font-semibold whitespace-nowrap transition ${
               mobileTab === 'editor'
-                ? 'bg-indigo-600 text-white shadow-sm'
+                ? 'bg-teal-600 text-white shadow-sm'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -142,7 +142,7 @@ export const SandboxRunner: React.FC<SandboxRunnerProps> = ({
             onClick={() => setMobileTab('output')}
             className={`flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-md text-xs font-semibold whitespace-nowrap transition ${
               mobileTab === 'output'
-                ? 'bg-indigo-600 text-white shadow-sm'
+                ? 'bg-teal-600 text-white shadow-sm'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -250,7 +250,7 @@ export const SandboxRunner: React.FC<SandboxRunnerProps> = ({
                   onClick={() => setOutputMode('preview')}
                   className={`flex items-center gap-1 px-2.5 py-1 min-h-[30px] rounded-md font-semibold text-xs whitespace-nowrap transition ${
                     outputMode === 'preview'
-                      ? 'bg-indigo-600 text-white shadow-sm'
+                      ? 'bg-teal-600 text-white shadow-sm'
                       : 'text-slate-400 hover:text-slate-200'
                   }`}
                 >
@@ -326,10 +326,10 @@ export const SandboxRunner: React.FC<SandboxRunnerProps> = ({
               {/* Returned Value Preview */}
               {returnValue !== null && returnValue !== undefined && (
                 <div className="pt-3 border-t border-slate-800 space-y-1">
-                  <div className="text-[10px] uppercase font-bold text-indigo-400 font-sans tracking-wider whitespace-nowrap">
+                  <div className="text-[10px] uppercase font-bold text-teal-400 font-sans tracking-wider whitespace-nowrap">
                     Evaluated Return Value:
                   </div>
-                  <pre className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 text-indigo-200 overflow-x-auto whitespace-pre">
+                  <pre className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 text-teal-200 overflow-x-auto whitespace-pre">
                     {typeof returnValue === 'object'
                       ? JSON.stringify(returnValue, null, 2)
                       : String(returnValue)}

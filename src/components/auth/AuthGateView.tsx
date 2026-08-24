@@ -31,30 +31,6 @@ const ROLES = [
   'Student / Learner',
 ];
 
-const DEMO_LOGINS = [
-  {
-    name: 'Alex Vance',
-    role: 'Principal Architect',
-    email: 'alex@devmentor.ai',
-    password: 'password123',
-    avatar: '🏛️',
-  },
-  {
-    name: 'Sarah Connor',
-    role: 'Senior Security Engineer',
-    email: 'sarah@security.io',
-    password: 'password123',
-    avatar: '🛡️',
-  },
-  {
-    name: 'Marcus Brody',
-    role: 'Full Stack Engineer',
-    email: 'marcus@devmentor.ai',
-    password: 'password123',
-    avatar: '⚡',
-  },
-];
-
 export const AuthGateView: React.FC = () => {
   const { login, register } = useAuth();
   const toast = useToast();
@@ -116,21 +92,6 @@ export const AuthGateView: React.FC = () => {
     }
   };
 
-  const handleQuickDemoLogin = async (demoEmail: string, demoPass: string) => {
-    setError(null);
-    setSuccessMessage(null);
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setIsSubmitting(true);
-    try {
-      await login({ email: demoEmail, password: demoPass });
-    } catch (err: any) {
-      setError(err.message || 'Demo login failed.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const calculatePasswordStrength = (pass: string) => {
     if (!pass) return 0;
     let score = 0;
@@ -143,24 +104,24 @@ export const AuthGateView: React.FC = () => {
   const strength = calculatePasswordStrength(password);
 
   return (
-    <div className="min-h-screen bg-[#0d1117] text-slate-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className="min-h-screen bg-[#f8f9fd] text-slate-800 flex flex-col font-sans selection:bg-purple-500/20 selection:text-purple-900">
       {/* Header Bar */}
-      <header className="px-4 sm:px-8 py-4 border-b border-slate-800 bg-[#161b22]/70 backdrop-blur-md flex items-center justify-between">
+      <header className="px-4 sm:px-8 py-4 border-b border-purple-100 bg-white/90 backdrop-blur-md flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 via-blue-600 to-purple-600 shadow-sm shadow-indigo-500/20 border border-indigo-400/30 flex-shrink-0">
+          <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-br from-purple-600 via-violet-600 to-indigo-700 shadow-sm shadow-purple-500/20 border border-purple-400/30 flex-shrink-0">
             <Code2 className="w-4 h-4 text-white" />
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="font-bold text-sm sm:text-base tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-200 bg-clip-text text-transparent">
-              DevMentor AI
+            <span className="font-bold text-sm sm:text-base tracking-tight text-slate-900">
+              Techtor
             </span>
-            <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+            <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-purple-100 text-purple-700 border border-purple-200">
               PRO
             </span>
           </div>
         </div>
 
-        <div className="hidden sm:block text-xs text-slate-400 font-medium">
+        <div className="hidden sm:block text-xs text-slate-500 font-medium">
           Sign in required to access workspace
         </div>
       </header>
@@ -170,58 +131,58 @@ export const AuthGateView: React.FC = () => {
         <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Column: Feature Highlights */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs font-semibold">
+              <Sparkles className="w-3.5 h-3.5 text-purple-600" />
               <span>AI-Powered Engineering Excellence</span>
             </div>
 
             <div className="space-y-3">
-              <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+              <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
                 Pair-Program with Specialized AI Mentors & Master Clean Code.
               </h1>
-              <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-                Sign in to your DevMentor account to get real-time multi-persona architectural feedback, automated vulnerability scanning, Socratic learning tracks, and instant code execution.
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                Sign in to your Techtor account to get real-time multi-persona architectural feedback, automated vulnerability scanning, Socratic learning tracks, and instant code execution.
               </p>
             </div>
 
             {/* Feature Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              <div className="p-3.5 rounded-xl bg-[#161b22] border border-slate-800 space-y-1.5">
-                <div className="flex items-center gap-2 text-indigo-400 font-semibold text-xs">
-                  <Bot className="w-4 h-4 flex-shrink-0" />
+              <div className="p-3.5 rounded-xl bg-white border border-purple-100 shadow-sm space-y-1.5">
+                <div className="flex items-center gap-2 text-purple-700 font-semibold text-xs">
+                  <Bot className="w-4 h-4 flex-shrink-0 text-purple-600" />
                   <span>4 Specialized Personas</span>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed">
-                  Collaborate with Elena (Architect), Marcus (Security), Aria (Performance), or Devin (Socratic Tutor).
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  Collaborate with Elena (Architect), Marcus (Security), Kai (Performance), or Sophia (Socratic Tutor).
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#161b22] border border-slate-800 space-y-1.5">
-                <div className="flex items-center gap-2 text-emerald-400 font-semibold text-xs">
-                  <ShieldCheck className="w-4 h-4 flex-shrink-0" />
+              <div className="p-3.5 rounded-xl bg-white border border-purple-100 shadow-sm space-y-1.5">
+                <div className="flex items-center gap-2 text-emerald-700 font-semibold text-xs">
+                  <ShieldCheck className="w-4 h-4 flex-shrink-0 text-emerald-600" />
                   <span>Code Review & Auto-Fix</span>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-500 leading-relaxed">
                   Deep scans for OWASP vulnerabilities, complexity bottlenecks, and clean code refactorings.
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#161b22] border border-slate-800 space-y-1.5">
-                <div className="flex items-center gap-2 text-blue-400 font-semibold text-xs">
-                  <Compass className="w-4 h-4 flex-shrink-0" />
+              <div className="p-3.5 rounded-xl bg-white border border-purple-100 shadow-sm space-y-1.5">
+                <div className="flex items-center gap-2 text-indigo-700 font-semibold text-xs">
+                  <Compass className="w-4 h-4 flex-shrink-0 text-indigo-600" />
                   <span>Interactive Learning Paths</span>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-500 leading-relaxed">
                   Multi-language tracks with Socratic quizzes, live coding challenges, and capstone projects.
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#161b22] border border-slate-800 space-y-1.5">
-                <div className="flex items-center gap-2 text-amber-400 font-semibold text-xs">
-                  <Terminal className="w-4 h-4 flex-shrink-0" />
+              <div className="p-3.5 rounded-xl bg-white border border-purple-100 shadow-sm space-y-1.5">
+                <div className="flex items-center gap-2 text-amber-700 font-semibold text-xs">
+                  <Terminal className="w-4 h-4 flex-shrink-0 text-amber-600" />
                   <span>Multi-Language Sandbox</span>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed">
+                <p className="text-[11px] text-slate-500 leading-relaxed">
                   Run TypeScript, Python, JavaScript, and PHP with live stdout logs and execution metrics.
                 </p>
               </div>
@@ -229,13 +190,13 @@ export const AuthGateView: React.FC = () => {
           </div>
 
           {/* Right Column: Authentication Card */}
-          <div className="lg:col-span-5 bg-[#161b22] border border-slate-700/80 rounded-2xl p-6 sm:p-7 shadow-2xl space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div className="lg:col-span-5 bg-white border border-purple-200/80 rounded-2xl p-6 sm:p-7 shadow-xl space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div>
-                <h2 className="text-base sm:text-lg font-bold text-white">
-                  {mode === 'login' ? 'Sign In to Workspace' : 'Create DevMentor Account'}
+                <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                  {mode === 'login' ? 'Sign In to Workspace' : 'Create Techtor Account'}
                 </h2>
-                <p className="text-[11px] text-slate-400">
+                <p className="text-[11px] text-slate-500">
                   {mode === 'login'
                     ? 'Enter your credentials to access your workbench'
                     : 'Register for a personalized developer profile'}
@@ -244,7 +205,7 @@ export const AuthGateView: React.FC = () => {
             </div>
 
             {/* Mode Switcher */}
-            <div className="p-1 bg-slate-900 rounded-xl border border-slate-800 flex gap-1">
+            <div className="p-1 bg-slate-100 rounded-xl border border-slate-200 flex gap-1">
               <button
                 type="button"
                 onClick={() => {
@@ -254,8 +215,8 @@ export const AuthGateView: React.FC = () => {
                 }}
                 className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap ${
                   mode === 'login'
-                    ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-purple-600 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 Sign In
@@ -269,8 +230,8 @@ export const AuthGateView: React.FC = () => {
                 }}
                 className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition whitespace-nowrap ${
                   mode === 'register'
-                    ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-purple-600 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 Create Account
@@ -279,16 +240,16 @@ export const AuthGateView: React.FC = () => {
 
             {/* Error Message */}
             {error && (
-              <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-900/50 text-rose-300 text-xs flex items-start gap-2 animate-fade-in">
-                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-rose-400" />
+              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2 animate-fade-in">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-rose-600" />
                 <div className="flex-1 leading-relaxed">{error}</div>
               </div>
             )}
 
             {/* Success Message */}
             {successMessage && (
-              <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-900/50 text-emerald-300 text-xs flex items-start gap-2 animate-fade-in">
-                <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-emerald-400" />
+              <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs flex items-start gap-2 animate-fade-in">
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5 text-emerald-600" />
                 <div className="flex-1 leading-relaxed">{successMessage}</div>
               </div>
             )}
@@ -298,30 +259,30 @@ export const AuthGateView: React.FC = () => {
               {mode === 'register' && (
                 <>
                   <div>
-                    <label className="block font-semibold text-slate-300 mb-1">Full Name</label>
+                    <label className="block font-semibold text-slate-700 mb-1">Full Name</label>
                     <div className="relative">
-                      <UserIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                      <UserIcon className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                       <input
                         type="text"
                         required
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="e.g. Alex Vance"
-                        className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-900 border border-slate-700 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
+                        className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white text-xs transition"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-slate-300 mb-1">
+                    <label className="block font-semibold text-slate-700 mb-1">
                       Engineering Role Focus
                     </label>
                     <div className="relative">
-                      <Briefcase className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                      <Briefcase className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                       <select
                         value={role}
                         onChange={(e) => setRole(e.target.value)}
-                        className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-900 border border-slate-700 text-slate-200 focus:outline-none focus:border-indigo-500 text-xs"
+                        className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-50 border border-slate-200 text-slate-900 focus:outline-none focus:border-purple-600 focus:bg-white text-xs transition"
                       >
                         {ROLES.map((r) => (
                           <option key={r} value={r}>
@@ -335,36 +296,36 @@ export const AuthGateView: React.FC = () => {
               )}
 
               <div>
-                <label className="block font-semibold text-slate-300 mb-1">Email Address</label>
+                <label className="block font-semibold text-slate-700 mb-1">Email Address</label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
-                    className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-900 border border-slate-700 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
+                    className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white text-xs transition"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-300 mb-1">Password</label>
+                <label className="block font-semibold text-slate-700 mb-1">Password</label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full pl-9 pr-10 py-2 min-h-[40px] rounded-xl bg-slate-900 border border-slate-700 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
+                    className="w-full pl-9 pr-10 py-2 min-h-[40px] rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white text-xs transition"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -372,21 +333,21 @@ export const AuthGateView: React.FC = () => {
 
                 {mode === 'register' && password && (
                   <div className="mt-1.5 space-y-1">
-                    <div className="flex items-center justify-between text-[10px] text-slate-400">
+                    <div className="flex items-center justify-between text-[10px] text-slate-500">
                       <span>Password strength:</span>
                       <span
                         className={
                           strength >= 80
-                            ? 'text-emerald-400 font-semibold'
+                            ? 'text-emerald-600 font-semibold'
                             : strength >= 50
-                            ? 'text-amber-400 font-semibold'
-                            : 'text-rose-400'
+                            ? 'text-amber-600 font-semibold'
+                            : 'text-rose-600'
                         }
                       >
                         {strength >= 80 ? 'Strong' : strength >= 50 ? 'Medium' : 'Weak'}
                       </span>
                     </div>
-                    <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="w-full h-1 bg-slate-200 rounded-full overflow-hidden">
                       <div
                         className={`h-full transition-all duration-300 ${
                           strength >= 80
@@ -404,16 +365,16 @@ export const AuthGateView: React.FC = () => {
 
               {mode === 'register' && (
                 <div>
-                  <label className="block font-semibold text-slate-300 mb-1">Confirm Password</label>
+                  <label className="block font-semibold text-slate-700 mb-1">Confirm Password</label>
                   <div className="relative">
-                    <KeyRound className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                    <KeyRound className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-900 border border-slate-700 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 text-xs"
+                      className="w-full pl-9 pr-3 py-2 min-h-[40px] rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-purple-600 focus:bg-white text-xs transition"
                     />
                   </div>
                 </div>
@@ -422,7 +383,7 @@ export const AuthGateView: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-2 py-2.5 min-h-[42px] rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full mt-2 py-2.5 min-h-[42px] rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition shadow-md shadow-purple-600/20 flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <>
@@ -437,34 +398,6 @@ export const AuthGateView: React.FC = () => {
                 )}
               </button>
             </form>
-
-            {/* 1-Click Quick Demo Accounts */}
-            <div className="pt-3 border-t border-slate-800 space-y-2">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center justify-between">
-                <span>1-Click Test Accounts</span>
-                <span className="text-indigo-400">Instant Access</span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {DEMO_LOGINS.slice(0, 2).map((demo) => (
-                  <button
-                    key={demo.email}
-                    type="button"
-                    onClick={() => handleQuickDemoLogin(demo.email, demo.password)}
-                    disabled={isSubmitting}
-                    className="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800/90 border border-slate-800 text-left transition flex items-center gap-2 text-xs group"
-                  >
-                    <span className="text-base flex-shrink-0">{demo.avatar}</span>
-                    <div className="min-w-0">
-                      <div className="font-semibold text-slate-200 group-hover:text-indigo-300 truncate">
-                        {demo.name}
-                      </div>
-                      <div className="text-[10px] text-slate-400 truncate">{demo.role}</div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -5,34 +5,24 @@ import { join } from 'path';
 
 // Process-level safety guards to prevent background driver/socket errors from crashing the app server
 process.on('uncaughtException', (err) => {
-  console.warn('[DevMentor Server Warning] Caught uncaughtException:', err?.message || err);
+  console.warn('[Techtor Server Warning] Caught uncaughtException:', err?.message || err);
 });
 
 process.on('unhandledRejection', (reason) => {
-  console.warn('[DevMentor Server Warning] Caught unhandledRejection:', reason);
+  console.warn('[Techtor Server Warning] Caught unhandledRejection:', reason);
 });
 
-// In container environments, process.env.NODE_ENV defaults to 'production'.
-// For the dev server, we MUST set NODE_ENV to 'development' BEFORE loading Next.js.
-const isProductionRun = process.env.NEXT_START === 'true';
-
-if (!isProductionRun) {
-  (process.env as any).NODE_ENV = 'development';
-  // Clean stale production build artifacts from .next to prevent chunk mismatch errors in dev mode
-  const nextDir = join(process.cwd(), '.next');
-  if (existsSync(nextDir)) {
-    try {
-      rmSync(nextDir, { recursive: true, force: true });
-      console.log('[DevMentor AI] Cleared stale .next directory for development mode.');
-    } catch (e) {
-      console.warn('[DevMentor AI] Failed to clear .next directory:', e);
-    }
-  }
-}
-
+const isProductionRun = process.env.NODE_ENV === 'production';
 const isDev = !isProductionRun;
 const hostname = '0.0.0.0';
 const port = 3000;
+
+try {
+  const { execSync } = await import('child_process');
+  execSync('kill -9 $(lsof -t -i:3000) 2>/dev/null || true', { stdio: 'ignore' });
+} catch {
+  // ignore
+}
 
 console.log(`[DevMentor AI] Initializing Next.js 15 server (devMode=${isDev}, NODE_ENV=${process.env.NODE_ENV})...`);
 

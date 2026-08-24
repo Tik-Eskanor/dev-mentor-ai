@@ -11,12 +11,12 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="w-full max-w-lg p-5 sm:p-6 rounded-2xl bg-[#161b22] border border-slate-800 shadow-2xl text-slate-100 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div className="w-full max-w-lg p-5 sm:p-6 rounded-2xl bg-[#131b2e] border border-slate-800 shadow-2xl text-slate-100 space-y-4 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between pb-3 border-b border-slate-800">
           <div className="flex items-center gap-2">
-            <Command className="w-5 h-5 text-indigo-400 flex-shrink-0" />
+            <Command className="w-5 h-5 text-teal-400 flex-shrink-0" />
             <h3 className="font-bold text-sm sm:text-base whitespace-nowrap">
-              DevMentor AI Guide & Shortcuts
+              Techtor Guide & Shortcuts
             </h3>
           </div>
           <button
@@ -29,7 +29,7 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
 
         <div className="space-y-3 text-xs">
           <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
-            <h4 className="font-semibold text-indigo-300">💡 Pro Pair-Programming Tips</h4>
+            <h4 className="font-semibold text-teal-300">💡 Pro Pair-Programming Tips</h4>
             <ul className="space-y-1.5 text-slate-300 leading-relaxed list-disc list-inside">
               <li>
                 <strong>Persona Switch:</strong> Toggle between <em>Elena Vance</em> (Architect), <em>Marcus Thorne</em> (Security), <em>Kai Chen</em> (Performance), or <em>Sophia Patel</em> (Educator) for specialized reviews.
@@ -49,19 +49,19 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
           <div className="space-y-2">
             <h4 className="font-semibold text-slate-300">⚡ Core Workflow</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-300">
-              <div className="p-2.5 rounded-lg bg-[#0d1117] border border-slate-800">
+              <div className="p-2.5 rounded-lg bg-[#0e1526] border border-slate-800">
                 <span className="font-bold text-slate-200">1. Pair Workbench</span>
                 <p className="text-[11px] text-slate-400 mt-0.5">Live AI chat, instant refactors, unit tests.</p>
               </div>
-              <div className="p-2.5 rounded-lg bg-[#0d1117] border border-slate-800">
+              <div className="p-2.5 rounded-lg bg-[#0e1526] border border-slate-800">
                 <span className="font-bold text-slate-200">2. Code Review</span>
                 <p className="text-[11px] text-slate-400 mt-0.5">Big-O analysis, 0-100 scores, security audits.</p>
               </div>
-              <div className="p-2.5 rounded-lg bg-[#0d1117] border border-slate-800">
+              <div className="p-2.5 rounded-lg bg-[#0e1526] border border-slate-800">
                 <span className="font-bold text-slate-200">3. Sandbox Runner</span>
                 <p className="text-[11px] text-slate-400 mt-0.5">Live HTML/CSS previews & runtime logs.</p>
               </div>
-              <div className="p-2.5 rounded-lg bg-[#0d1117] border border-slate-800">
+              <div className="p-2.5 rounded-lg bg-[#0e1526] border border-slate-800">
                 <span className="font-bold text-slate-200">4. Learning Paths</span>
                 <p className="text-[11px] text-slate-400 mt-0.5">AI-tailored curriculum, quizzes, and capstones.</p>
               </div>
@@ -72,7 +72,7 @@ export const ShortcutsModal: React.FC<ShortcutsModalProps> = ({ isOpen, onClose 
         <div className="pt-2 flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 min-h-[38px] rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition shadow-sm whitespace-nowrap flex-shrink-0"
+            className="px-4 py-2 min-h-[38px] rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs transition shadow-sm whitespace-nowrap flex-shrink-0"
           >
             Got it, Let&apos;s Code!
           </button>

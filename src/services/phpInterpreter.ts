@@ -1,4 +1,4 @@
-// DevMentor Client-Side High-Fidelity PHP Interpreter
+// Techtor Client-Side High-Fidelity PHP Interpreter
 export interface PhpExecutionResult {
   success: boolean;
   logs: string[];
