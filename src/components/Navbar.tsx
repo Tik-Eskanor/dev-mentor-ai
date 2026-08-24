@@ -91,9 +91,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="font-bold text-xs sm:text-sm tracking-tight text-slate-900 whitespace-nowrap">
                 Techtor
               </span>
-              <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[9px] font-semibold bg-purple-100 text-purple-700 border border-purple-200 whitespace-nowrap">
-                PRO
-              </span>
             </div>
           </div>
 

@@ -115,9 +115,6 @@ export const AuthGateView: React.FC = () => {
             <span className="font-bold text-sm sm:text-base tracking-tight text-slate-900">
               Techtor
             </span>
-            <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-purple-100 text-purple-700 border border-purple-200">
-              PRO
-            </span>
           </div>
         </div>
 
