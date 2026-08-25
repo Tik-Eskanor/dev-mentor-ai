@@ -1,7 +1,9 @@
-import { CodeReviewResult, Language, LearningPath, MentorPersonaId } from '../types';
+import { CodeReviewResult, Language, LearningPath, MentorPersonaId } from '../types/index';
 import { executePhpCodeLocally } from './phpInterpreter';
 import { analyzeCodeStatically } from './staticAnalyzer';
-import { transform } from 'sucrase';
+import { transform } from "sucrase";
+
+const transformFn = transform;
 
 export async function requestReview(payload: {
   code: string;
@@ -422,12 +424,14 @@ export async function executeCodeInSandbox(code: string, language: Language): Pr
 
     // Transpile TypeScript, JSX, and Parameter properties using Sucrase
     try {
-      const transpiled = transform(code, {
-        transforms: ['typescript', 'jsx'],
-        jsxRuntime: 'classic',
-        production: true,
-      });
-      runnableJs = transpiled.code;
+      if (typeof transformFn === 'function') {
+        const transpiled = transformFn(code, {
+          transforms: ['typescript', 'jsx'],
+          jsxRuntime: 'classic',
+          production: true,
+        });
+        runnableJs = transpiled.code;
+      }
     } catch (transpileErr: any) {
       // If code had a syntax error in transpile, capture and provide helpful message
       throw new Error(`Syntax / Type error: ${transpileErr.message}`);

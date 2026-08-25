@@ -1,4 +1,4 @@
-import { User } from '../types';
+import { User } from '../types/index';
 
 export interface RegisterPayload {
   name: string;

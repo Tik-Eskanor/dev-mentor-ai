@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, AuthState } from '../types';
+import { User, AuthState } from '../types/index';
 import {
   apiLogin,
   apiRegister,
@@ -60,7 +60,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setUser(null);
             localStorage.removeItem(AUTH_TOKEN_KEY);
             localStorage.removeItem(AUTH_USER_KEY);
-            toast.warning('Session Expired', 'Please sign in to continue using Techtor.');
           }
         }
       } catch (err) {
@@ -71,7 +70,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     checkAuth();
-  }, [toast]);
+  }, []);
 
   const login = async (payload: LoginPayload) => {
     setIsLoading(true);
@@ -143,22 +142,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsAuthModalOpen(false);
   };
 
+  const contextValue = React.useMemo(
+    () => ({
+      user,
+      token,
+      isAuthenticated: !!user && !!token,
+      isLoading,
+      login,
+      register,
+      logout,
+      isAuthModalOpen,
+      authModalMode,
+      openAuthModal,
+      closeAuthModal,
+    }),
+    [user, token, isLoading, isAuthModalOpen, authModalMode]
+  );
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        token,
-        isAuthenticated: !!user && !!token,
-        isLoading,
-        login,
-        register,
-        logout,
-        isAuthModalOpen,
-        authModalMode,
-        openAuthModal,
-        closeAuthModal,
-      }}
-    >
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );

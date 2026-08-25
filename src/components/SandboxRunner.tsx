@@ -12,7 +12,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { CodeEditor } from './CodeEditor';
-import { Language } from '../types';
+import { Language } from '../types/index';
 import { executeCodeInSandbox, requestAutoFix } from '../services/mentorApi';
 import { LANGUAGE_SAMPLES } from '../data/defaultData';
 

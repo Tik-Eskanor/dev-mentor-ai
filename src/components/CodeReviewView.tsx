@@ -17,7 +17,7 @@ import {
   ListFilter,
   CheckCheck,
 } from 'lucide-react';
-import { CodeReviewResult, Language } from '../types';
+import { CodeReviewResult, Language } from '../types/index';
 import { requestReview } from '../services/mentorApi';
 import { DiffViewer } from './DiffViewer';
 

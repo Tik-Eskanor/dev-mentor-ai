@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Copy, Check, Sparkles, RefreshCw, AlertCircle } from 'lucide-react';
-import { Language } from '../types';
+import { Language } from '../types/index';
 
 interface CodeEditorProps {
   code: string;

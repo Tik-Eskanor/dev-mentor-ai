@@ -75,18 +75,21 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     [showToast]
   );
 
+  const contextValue = React.useMemo(
+    () => ({
+      toasts,
+      showToast,
+      success,
+      error,
+      warning,
+      info,
+      dismissToast,
+    }),
+    [toasts, showToast, success, error, warning, info, dismissToast]
+  );
+
   return (
-    <ToastContext.Provider
-      value={{
-        toasts,
-        showToast,
-        success,
-        error,
-        warning,
-        info,
-        dismissToast,
-      }}
-    >
+    <ToastContext.Provider value={contextValue}>
       {children}
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
     </ToastContext.Provider>
@@ -169,8 +172,8 @@ const ToastCard: React.FC<{
     },
   };
 
-  const config = configs[toast.type];
-  const Icon = config.icon;
+  const config = configs[toast.type] || configs.info;
+  const Icon = config.icon || Info;
 
   return (
     <motion.div

@@ -2,18 +2,18 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-import { User } from '../types';
+import ws from 'ws';
+import type { User } from '../types/index';
 
-// Configure Neon driver for serverless/Node environments cleanly without broken C++ ws bindings
+// Configure Neon driver for serverless/Node environments cleanly
 if (typeof window === 'undefined') {
+  if (ws) {
+    neonConfig.webSocketConstructor = ws;
+  }
   if (typeof fetch !== 'undefined') {
     neonConfig.fetchFunction = fetch;
   }
-  if (typeof globalThis.WebSocket !== 'undefined') {
-    neonConfig.webSocketConstructor = globalThis.WebSocket;
-  } else {
-    neonConfig.poolQueryViaFetch = true;
-  }
+  neonConfig.poolQueryViaFetch = true;
 }
 
 export interface StoredUser {
@@ -48,7 +48,7 @@ let isNeonConnected = false;
 let initPromise: Promise<void> | null = null;
 
 function getConnectionString(): string | undefined {
-  return process.env.DATABASE_URL;
+  return process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.NEON_DATABASE_URL;
 }
 
 export function isUsingNeon(): boolean {
@@ -194,13 +194,14 @@ export async function initDatabase(): Promise<void> {
         // Seed initial accounts in Neon if empty
         for (const acc of SEED_USERS) {
           const emailLower = acc.email.toLowerCase();
-          const existing = await pool.query('SELECT id FROM users WHERE email = $1', [emailLower]);
+          const existing = await pool.query('SELECT id FROM users WHERE email = $1 OR id = $2', [emailLower, acc.id]);
           if (existing.rows.length === 0) {
             const salt = crypto.randomBytes(16).toString('hex');
             const passwordHash = hashPassword(acc.password, salt);
             await pool.query(
               `INSERT INTO users (id, name, email, role, avatar, password_hash, salt, created_at)
-               VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())`,
+               VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
+               ON CONFLICT (id) DO NOTHING`,
               [acc.id, acc.name, emailLower, acc.role, acc.avatar, passwordHash, salt]
             );
           }
@@ -209,16 +210,18 @@ export async function initDatabase(): Promise<void> {
         isNeonConnected = true;
         console.log('[Techtor DB] Neon PostgreSQL tables and seed accounts verified successfully.');
         return;
-      } catch (err) {
-        console.error('[Techtor DB] Neon connection failed, using local storage fallback:', err);
+      } catch (err: any) {
+        console.error('[Techtor DB] Neon connection failed:', err);
         isNeonConnected = false;
         pool = null;
+        initPromise = null; // allow retry if connection was transient
+        throw new Error(`Neon Database Connection Failed: ${err.message || String(err)}`);
       }
     } else {
-      console.log('[Techtor DB] No DATABASE_URL detected. Using persistent local storage.');
+      console.log('[Techtor DB] No DATABASE_URL detected.');
     }
 
-    // Seed local fallback
+    // Seed local fallback if DATABASE_URL is not provided
     let added = false;
     for (const acc of SEED_USERS) {
       const emailLower = acc.email.toLowerCase();
@@ -247,28 +250,37 @@ export async function initDatabase(): Promise<void> {
 }
 
 export async function findUserByEmail(email: string): Promise<StoredUser | null> {
-  await initDatabase();
   const emailLower = email.toLowerCase().trim();
+  const connectionString = getConnectionString();
 
-  if (pool && isNeonConnected) {
+  if (connectionString) {
     try {
-      const res = await pool.query('SELECT * FROM users WHERE email = $1', [emailLower]);
-      if (res.rows.length > 0) {
-        const row = res.rows[0];
-        return {
-          id: row.id,
-          name: row.name,
-          email: row.email,
-          role: row.role,
-          avatar: row.avatar,
-          passwordHash: row.password_hash,
-          salt: row.salt,
-          createdAt: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString(),
-        };
+      await initDatabase();
+    } catch (err: any) {
+      console.warn('[Techtor DB] findUserByEmail init error:', err?.message);
+    }
+
+    if (pool && isNeonConnected) {
+      try {
+        const res = await pool.query('SELECT * FROM users WHERE email = $1', [emailLower]);
+        if (res.rows.length > 0) {
+          const row = res.rows[0];
+          return {
+            id: row.id,
+            name: row.name,
+            email: row.email,
+            role: row.role,
+            avatar: row.avatar,
+            passwordHash: row.password_hash,
+            salt: row.salt,
+            createdAt: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString(),
+          };
+        }
+        return null;
+      } catch (err: any) {
+        console.error('[Techtor DB] findUserByEmail Neon error:', err);
+        throw new Error(`Database error querying user from Neon: ${err.message || String(err)}`);
       }
-      return null;
-    } catch (err) {
-      console.error('[Techtor DB] findUserByEmail Neon error:', err);
     }
   }
 
@@ -276,27 +288,36 @@ export async function findUserByEmail(email: string): Promise<StoredUser | null>
 }
 
 export async function findUserById(id: string): Promise<StoredUser | null> {
-  await initDatabase();
+  const connectionString = getConnectionString();
 
-  if (pool && isNeonConnected) {
+  if (connectionString) {
     try {
-      const res = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
-      if (res.rows.length > 0) {
-        const row = res.rows[0];
-        return {
-          id: row.id,
-          name: row.name,
-          email: row.email,
-          role: row.role,
-          avatar: row.avatar,
-          passwordHash: row.password_hash,
-          salt: row.salt,
-          createdAt: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString(),
-        };
+      await initDatabase();
+    } catch (err: any) {
+      console.warn('[Techtor DB] findUserById init error:', err?.message);
+    }
+
+    if (pool && isNeonConnected) {
+      try {
+        const res = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+        if (res.rows.length > 0) {
+          const row = res.rows[0];
+          return {
+            id: row.id,
+            name: row.name,
+            email: row.email,
+            role: row.role,
+            avatar: row.avatar,
+            passwordHash: row.password_hash,
+            salt: row.salt,
+            createdAt: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString(),
+          };
+        }
+        return null;
+      } catch (err: any) {
+        console.error('[Techtor DB] findUserById Neon error:', err);
+        throw new Error(`Database error querying user from Neon: ${err.message || String(err)}`);
       }
-      return null;
-    } catch (err) {
-      console.error('[Techtor DB] findUserById Neon error:', err);
     }
   }
 
@@ -305,9 +326,19 @@ export async function findUserById(id: string): Promise<StoredUser | null> {
 }
 
 export async function insertUser(user: StoredUser): Promise<void> {
-  await initDatabase();
+  const connectionString = getConnectionString();
 
-  if (pool && isNeonConnected) {
+  if (connectionString) {
+    try {
+      await initDatabase();
+    } catch (err: any) {
+      throw new Error(`Failed to save account to Neon Database: ${err.message}. Please verify DATABASE_URL in Vercel settings.`);
+    }
+
+    if (!pool || !isNeonConnected) {
+      throw new Error('Neon database is not connected. Please check your DATABASE_URL environment variable on Vercel.');
+    }
+
     try {
       await pool.query(
         `INSERT INTO users (id, name, email, role, avatar, password_hash, salt, created_at)
@@ -315,9 +346,18 @@ export async function insertUser(user: StoredUser): Promise<void> {
         [user.id, user.name, user.email.toLowerCase(), user.role, user.avatar, user.passwordHash, user.salt, user.createdAt]
       );
       return;
-    } catch (err) {
+    } catch (err: any) {
       console.error('[Techtor DB] insertUser Neon error:', err);
+      if (err.code === '23505') {
+        throw new Error('An account with this email already exists in the Neon database.');
+      }
+      throw new Error(`Neon Database Error: ${err.message || String(err)}`);
     }
+  }
+
+  // If hosting on Vercel and DATABASE_URL is missing, inform the developer!
+  if (process.env.VERCEL) {
+    throw new Error('DATABASE_URL environment variable is missing on Vercel! Please add your Neon connection string in Vercel Project Settings -> Environment Variables.');
   }
 
   fallbackUsers.set(user.email.toLowerCase(), user);
@@ -325,18 +365,27 @@ export async function insertUser(user: StoredUser): Promise<void> {
 }
 
 export async function insertSession(token: string, userId: string): Promise<void> {
-  await initDatabase();
+  const connectionString = getConnectionString();
 
-  if (pool && isNeonConnected) {
+  if (connectionString) {
     try {
-      await pool.query(
-        `INSERT INTO sessions (token, user_id, created_at) VALUES ($1, $2, NOW())
-         ON CONFLICT (token) DO UPDATE SET user_id = $2, created_at = NOW()`,
-        [token, userId]
-      );
-      return;
-    } catch (err) {
-      console.error('[Techtor DB] insertSession Neon error:', err);
+      await initDatabase();
+    } catch (err: any) {
+      throw new Error(`Failed to save session to Neon Database: ${err.message}`);
+    }
+
+    if (pool && isNeonConnected) {
+      try {
+        await pool.query(
+          `INSERT INTO sessions (token, user_id, created_at) VALUES ($1, $2, NOW())
+           ON CONFLICT (token) DO UPDATE SET user_id = $2, created_at = NOW()`,
+          [token, userId]
+        );
+        return;
+      } catch (err: any) {
+        console.error('[Techtor DB] insertSession Neon error:', err);
+        throw new Error(`Neon Session Error: ${err.message || String(err)}`);
+      }
     }
   }
 
@@ -345,17 +394,26 @@ export async function insertSession(token: string, userId: string): Promise<void
 }
 
 export async function findSession(token: string): Promise<{ userId: string } | null> {
-  await initDatabase();
+  const connectionString = getConnectionString();
 
-  if (pool && isNeonConnected) {
+  if (connectionString) {
     try {
-      const res = await pool.query('SELECT user_id FROM sessions WHERE token = $1', [token]);
-      if (res.rows.length > 0) {
-        return { userId: res.rows[0].user_id };
+      await initDatabase();
+    } catch (err: any) {
+      console.warn('[Techtor DB] findSession init error:', err?.message);
+    }
+
+    if (pool && isNeonConnected) {
+      try {
+        const res = await pool.query('SELECT user_id FROM sessions WHERE token = $1', [token]);
+        if (res.rows.length > 0) {
+          return { userId: res.rows[0].user_id };
+        }
+        return null;
+      } catch (err: any) {
+        console.error('[Techtor DB] findSession Neon error:', err);
+        throw new Error(`Database error checking session in Neon: ${err.message || String(err)}`);
       }
-      return null;
-    } catch (err) {
-      console.error('[Techtor DB] findSession Neon error:', err);
     }
   }
 
@@ -364,14 +422,22 @@ export async function findSession(token: string): Promise<{ userId: string } | n
 }
 
 export async function removeSession(token: string): Promise<void> {
-  await initDatabase();
+  const connectionString = getConnectionString();
 
-  if (pool && isNeonConnected) {
+  if (connectionString) {
     try {
-      await pool.query('DELETE FROM sessions WHERE token = $1', [token]);
-      return;
-    } catch (err) {
-      console.error('[Techtor DB] removeSession Neon error:', err);
+      await initDatabase();
+    } catch (err: any) {
+      console.warn('[Techtor DB] removeSession init error:', err?.message);
+    }
+
+    if (pool && isNeonConnected) {
+      try {
+        await pool.query('DELETE FROM sessions WHERE token = $1', [token]);
+        return;
+      } catch (err: any) {
+        console.error('[Techtor DB] removeSession Neon error:', err);
+      }
     }
   }
 

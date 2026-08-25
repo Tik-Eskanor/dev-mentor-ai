@@ -12,16 +12,37 @@ process.on('unhandledRejection', (reason) => {
   console.warn('[Techtor Server Warning] Caught unhandledRejection:', reason);
 });
 
-const isProductionRun = process.env.NODE_ENV === 'production';
-const isDev = !isProductionRun;
+const isStartCommand = process.env.npm_lifecycle_event === 'start';
+const appPathsManifest = join(process.cwd(), '.next', 'server', 'app-paths-manifest.json');
+const pagesManifest = join(process.cwd(), '.next', 'server', 'pages-manifest.json');
+const routesManifestPath = join(process.cwd(), '.next', 'routes-manifest.json');
+const buildIdPath = join(process.cwd(), '.next', 'BUILD_ID');
+
+const hasFullProductionBuild = 
+  existsSync(appPathsManifest) && 
+  existsSync(pagesManifest) && 
+  existsSync(routesManifestPath) && 
+  existsSync(buildIdPath);
+
+// Only run production mode if explicitly requested by 'start' command and all build artifacts exist
+const isDev = !isStartCommand || !hasFullProductionBuild;
+
+if (isDev) {
+  (process.env as Record<string, string | undefined>).NODE_ENV = 'development';
+} else {
+  (process.env as Record<string, string | undefined>).NODE_ENV = 'production';
+}
+
 const hostname = '0.0.0.0';
 const port = 3000;
 
-try {
-  const { execSync } = await import('child_process');
-  execSync('kill -9 $(lsof -t -i:3000) 2>/dev/null || true', { stdio: 'ignore' });
-} catch {
-  // ignore
+if (process.platform !== 'win32') {
+  try {
+    const { execSync } = await import('child_process');
+    execSync('kill -9 $(lsof -t -i:3000) 2>/dev/null || true', { stdio: 'ignore' });
+  } catch {
+    // ignore
+  }
 }
 
 console.log(`[DevMentor AI] Initializing Next.js 15 server (devMode=${isDev}, NODE_ENV=${process.env.NODE_ENV})...`);

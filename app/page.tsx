@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, ActiveTab } from '../src/components/Navbar';
 import { Workbench } from '../src/components/Workbench';
 import { CodeReviewView } from '../src/components/CodeReviewView';
@@ -10,17 +10,22 @@ import { ShortcutsModal } from '../src/components/ShortcutsModal';
 import { AuthModal } from '../src/components/auth/AuthModal';
 import { AuthGateView } from '../src/components/auth/AuthGateView';
 import { useAuth } from '../src/context/AuthContext';
-import { Language, MentorPersonaId } from '../src/types';
+import { Language, MentorPersonaId } from '../src/types/index';
 import { LANGUAGE_SAMPLES } from '../src/data/defaultData';
 import { Loader2 } from 'lucide-react';
 
 export default function Home() {
   const { isAuthenticated, isLoading } = useAuth();
+  const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>('workbench');
   const [language, setLanguage] = useState<Language>('typescript');
   const [activePersona, setActivePersona] = useState<MentorPersonaId>('architect');
   const [code, setCode] = useState<string>(LANGUAGE_SAMPLES['typescript'].code);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLanguageChange = (newLang: Language) => {
     setLanguage(newLang);
@@ -42,7 +47,7 @@ export default function Home() {
     setActiveTab('workbench');
   };
 
-  if (isLoading) {
+  if (!mounted || isLoading) {
     return (
       <div className="min-h-screen bg-[#f8f9fd] flex flex-col items-center justify-center text-slate-600 gap-3">
         <Loader2 className="w-8 h-8 animate-spin text-purple-600" />

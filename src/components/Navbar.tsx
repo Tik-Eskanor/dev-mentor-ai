@@ -19,7 +19,7 @@ import {
   Layers,
   Check,
 } from 'lucide-react';
-import { Language, MentorPersonaId } from '../types';
+import { Language, MentorPersonaId } from '../types/index';
 import { MENTOR_PERSONAS, LANGUAGE_OPTIONS } from '../data/defaultData';
 import { useAuth } from '../context/AuthContext';
 

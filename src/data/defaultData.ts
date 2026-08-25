@@ -1,4 +1,4 @@
-import { LearningPath, MentorPersona, Language } from '../types';
+import { LearningPath, MentorPersona, Language } from '../types/index';
 
 export const MENTOR_PERSONAS: Record<string, MentorPersona> = {
   architect: {

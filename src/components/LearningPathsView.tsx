@@ -26,7 +26,7 @@ import {
   Zap,
   GraduationCap,
 } from 'lucide-react';
-import { LearningPath, LearningModule } from '../types';
+import { LearningPath, LearningModule } from '../types/index';
 import { DEFAULT_LEARNING_PATHS } from '../data/defaultData';
 import { requestCustomLearningPath } from '../services/mentorApi';
 

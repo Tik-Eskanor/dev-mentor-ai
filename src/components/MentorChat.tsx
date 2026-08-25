@@ -20,7 +20,7 @@ import {
   Zap,
   GraduationCap,
 } from 'lucide-react';
-import { ChatMessage, Language, MentorPersonaId } from '../types';
+import { ChatMessage, Language, MentorPersonaId } from '../types/index';
 import { MENTOR_PERSONAS } from '../data/defaultData';
 import { requestPairChat } from '../services/mentorApi';
 
@@ -440,10 +440,16 @@ export const MentorChat: React.FC<MentorChatProps> = ({
                       <ReactMarkdown
                         components={{
                           code({ node, inline, className, children, ...props }: any) {
+                            const rawCode = Array.isArray(children)
+                              ? children.join('')
+                              : typeof children === 'string'
+                              ? children
+                              : String(children || '');
+                            const codeString = rawCode.replace(/\n$/, '');
                             const match = /language-(\w+)/.exec(className || '');
-                            const codeString = String(children).replace(/\n$/, '');
+                            const isBlock = match || codeString.includes('\n') || (inline === false);
 
-                            if (!inline && (match || codeString.includes('\n'))) {
+                            if (isBlock) {
                               const snippetLang = match ? match[1] : language;
                               const snippetKey = `code-${msg.id}-${codeString.slice(0, 20)}`;
 

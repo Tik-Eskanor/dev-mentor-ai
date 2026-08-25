@@ -16,7 +16,7 @@ import {
 import { CodeEditor } from './CodeEditor';
 import { DiffViewer } from './DiffViewer';
 import { MentorChat } from './MentorChat';
-import { Language, MentorPersonaId } from '../types';
+import { Language, MentorPersonaId } from '../types/index';
 import { MENTOR_PERSONAS } from '../data/defaultData';
 import {
   requestRefactor,

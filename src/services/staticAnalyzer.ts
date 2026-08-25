@@ -1,4 +1,4 @@
-import { CodeReviewResult, Language } from '../types';
+import { CodeReviewResult, Language } from '../types/index';
 
 export interface StaticAnalysisFinding {
   line: number;

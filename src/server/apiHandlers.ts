@@ -2,7 +2,7 @@ import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 import { analyzeCodeStatically } from '../services/staticAnalyzer';
 import { executePhpCodeLocally } from '../services/phpInterpreter';
-import { Language, MentorPersonaId } from '../types';
+import { Language, MentorPersonaId } from '../types/index';
 
 dotenv.config();
 
@@ -82,7 +82,7 @@ export async function handleCodeReview(body: {
   context?: string;
   strictness?: string;
 }) {
-  const { code, language, context = '', strictness = 'Balanced' } = body;
+  const { code = '', language = 'typescript', context = '', strictness = 'Balanced' } = body || {};
   
   if (!code || !code.trim()) {
     return {
@@ -208,7 +208,8 @@ export async function handleAutoFix(body: {
   error?: string;
   issues?: any[];
 }) {
-  const { code, language, error = '', issues = [] } = body;
+  const { code = '', language = 'typescript', error = '', issues = [] } = body || {};
+  const safeIssues = Array.isArray(issues) ? issues : [];
   const staticRes = analyzeCodeStatically(code, (language as Language) || 'typescript');
 
   const prompt = `You are a Principal Software Engineer and Compiler Expert.
@@ -223,7 +224,7 @@ Runtime / Linter Error (if any):
 ${error || 'Fix all detected code review issues and ensure code executes cleanly with 0 errors.'}
 
 Issues Identified:
-${issues.map((i) => `- [${i.severity}] ${i.title}: ${i.description}`).join('\n') || 'General hardening and error correction.'}
+${safeIssues.map((i) => `- [${i?.severity || 'warning'}] ${i?.title || 'Issue'}: ${i?.description || ''}`).join('\n') || 'General hardening and error correction.'}
 
 Return a strictly valid JSON object matching this schema:
 {
@@ -262,13 +263,25 @@ Return a strictly valid JSON object matching this schema:
 }
 
 export async function handlePairChat(body: {
-  messages: Array<{ role: string; content: string }>;
+  messages?: Array<{ role: string; content: string }>;
   code?: string;
   language?: string;
   persona?: MentorPersonaId;
   selectedSnippet?: string;
 }) {
-  const { messages, code = '', language = 'typescript', persona = 'architect', selectedSnippet = '' } = body;
+  const { code = '', language = 'typescript', persona = 'architect', selectedSnippet = '' } = body || {};
+
+  let rawMessages: Array<{ role: string; content: string }> = [];
+  if (Array.isArray(body?.messages)) {
+    rawMessages = body.messages;
+  } else if (Array.isArray((body as any)?.history)) {
+    rawMessages = (body as any).history;
+  }
+  if (rawMessages.length === 0 && (body as any)?.message) {
+    rawMessages = [{ role: 'user', content: String((body as any).message) }];
+  }
+
+  const validMessages = rawMessages.filter((m) => m && typeof m.content === 'string');
 
   const personaInstructions: Record<string, string> = {
     architect: 'You are Elena Vance, a Principal Staff Software Architect. You obsess over scalable architectural patterns, system design trade-offs, decoupling, maintainability, SOLID principles, and clean API design.',
@@ -290,7 +303,7 @@ Key Communication Guidelines:
 - Maintain your persona's distinctive professional perspective throughout the dialogue.`;
 
   try {
-    const formattedContents = messages
+    const formattedContents = validMessages
       .filter((m) => m.role === 'user' || m.role === 'assistant' || m.role === 'model')
       .map((m) => ({
         role: m.role === 'user' ? 'user' : 'model',
@@ -314,7 +327,7 @@ Key Communication Guidelines:
   }
 
   // Graceful conversational fallback
-  const lastUserMsg = messages[messages.length - 1]?.content || '';
+  const lastUserMsg = validMessages[validMessages.length - 1]?.content || '';
   return {
     reply: `I analyzed your **${language}** code regarding *" ${lastUserMsg.slice(0, 80)}... "*:\n\n1. **Core Observation**: The architecture handles data flow cleanly, but consider isolating side effects into dedicated service boundaries.\n2. **Type & Memory Safety**: Verify all external inputs have explicit boundary guards and avoid unbounded collections.\n3. **Recommended Next Step**: Would you like me to demonstrate an optimized refactor with unit tests for this section?`,
     persona,

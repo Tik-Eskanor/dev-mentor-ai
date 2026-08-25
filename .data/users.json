@@ -1,0 +1,32 @@
+[
+  {
+    "id": "user-demo-1",
+    "name": "Alex Vance",
+    "email": "alex@techtor.ai",
+    "role": "Principal Architect",
+    "avatar": "🏛️",
+    "passwordHash": "15ef5ce942ea9a9f2448640ff749426f4afd7e0445d713c1dd9364af6358414fecf32ba012f90df0d88877dfcc5f1af4b28db1c78cda5f9a28d794f927a863e3",
+    "salt": "0d0fb121a92fe1539a9470b0328976d2",
+    "createdAt": "2026-08-25T07:11:08.252Z"
+  },
+  {
+    "id": "user-demo-2",
+    "name": "Sarah Connor",
+    "email": "sarah@security.io",
+    "role": "Senior Security Engineer",
+    "avatar": "🛡️",
+    "passwordHash": "2c811c2d77d07398509cb859b14b2f03cad889b7156ce099e511690bdf0910f796e0cb208ff010b734e756ee8e45e3d5acb1881c219dceac13ab162f7f8fa1bd",
+    "salt": "5beeaf1851311bc234cb6dd640bbd93f",
+    "createdAt": "2026-08-25T07:11:08.261Z"
+  },
+  {
+    "id": "user-demo-3",
+    "name": "Marcus Brody",
+    "email": "marcus@techtor.ai",
+    "role": "Full Stack Engineer",
+    "avatar": "⚡",
+    "passwordHash": "c7e06808080d449537ad4523f5335bead482a60c119b2b72ee109316cdd867e8ad963b0f956ff421dab281eb87d1a33efac66f7fcda1c63467496c5156eac575",
+    "salt": "d2b6c7c473ee28be6ef10af6b2a73b53",
+    "createdAt": "2026-08-25T07:11:08.270Z"
+  }
+]
